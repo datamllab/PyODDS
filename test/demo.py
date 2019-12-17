@@ -64,6 +64,7 @@ if __name__ == '__main__':
     print('Load data successful')
 
     #algorithm
+    # TODO: Add CASH here
 
     clf = algorithm_selection(args.algorithm,random_state=rng,contamination=args.contamination)
     print('Start processing:')
