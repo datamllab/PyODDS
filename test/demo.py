@@ -2,6 +2,7 @@ import numpy as np
 import argparse
 import time
 import logging
+import pandas as pd
 import getpass
 from pyodds.utils.utilities import output_performance,insert_demo_data,connect_server,query_data
 from pyodds.utils.importAlgorithm import algorithm_selection
@@ -17,7 +18,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Anomaly Detection Platform Settings")
     parser.add_argument('--host', default='127.0.0.1')
-    parser.add_argument('--user', default='yli')
+    parser.add_argument('--user', default='root')
     parser.add_argument('--random_seed',default=42, type=int)
     parser.add_argument('--database',default='db')
     parser.add_argument('--table',default='t')
@@ -38,7 +39,7 @@ if __name__ == '__main__':
     rng = np.random.RandomState(args.random_seed)
     np.random.seed(args.random_seed)
 
-    password = getpass.getpass("Please input your password:")
+    password = "toasdata" #getpass.getpass("Please input your password:")
 
     #connection configeration
     conn,cursor=connect_server(args.host, args.user, password)
@@ -49,7 +50,7 @@ if __name__ == '__main__':
     if args.ground_truth:
         ground_truth_whole=insert_demo_data(conn,cursor,args.database,args.table,args.ground_truth)
     else:
-        insert_demo_data(conn,cursor,args.database,args.table,args.start_time,args.end_time,args.time_stamp,args.ground_truth)
+        insert_demo_data(conn,cursor,args.database,args.table,args.ground_truth)
 
 
     if args.ground_truth:
@@ -63,8 +64,8 @@ if __name__ == '__main__':
     print('Loading cost: %.6f seconds' %(time.clock() - start_time))
     print('Load data successful')
 
-    #algorithm
-    # TODO: Add CASH here
+	#TODO: Allow load custom datasets not in TD engine:
+    #TODO: Add CASH here
 
     clf = algorithm_selection(args.algorithm,random_state=rng,contamination=args.contamination)
     print('Start processing:')
@@ -84,6 +85,5 @@ if __name__ == '__main__':
         else:
             visualize_distribution_time_serie(clf.ts,data,args.saving_path)
             visualize_outlierscore(outlierness,prediction_result,args.contamination,args.saving_path)
-
-
+    print("Connection closing")
     conn.close()
