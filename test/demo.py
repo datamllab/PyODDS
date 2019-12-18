@@ -65,6 +65,9 @@ if __name__ == '__main__':
     print('Load data successful')
 
 	#TODO: Allow load custom datasets not in TD engine:
+    # data = pd.read_csv('art_jumps_down_with_gt.csv')
+    # ground_truth = data['label'].values
+    # data.drop(['label'],axis=1,inplace=True)
     #TODO: Add CASH here
 
     clf = algorithm_selection(args.algorithm,random_state=rng,contamination=args.contamination)
@@ -85,5 +88,5 @@ if __name__ == '__main__':
         else:
             visualize_distribution_time_serie(clf.ts,data,args.saving_path)
             visualize_outlierscore(outlierness,prediction_result,args.contamination,args.saving_path)
-    print("Connection closing")
+
     conn.close()
