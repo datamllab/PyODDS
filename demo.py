@@ -62,6 +62,7 @@ if __name__ == '__main__':
 
     print('Loading cost: %.6f seconds' %(time.clock() - start_time))
     print('Load data successful')
+    
 
     #algorithm
 
